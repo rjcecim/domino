@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Dívidas do Jogo de Dominó</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        .container {
+            width: 300px;
+            margin: auto;
+            padding-top: 20px;
+        }
+        input, button {
+            margin-top: 10px;
+            width: 100%;
+            padding: 10px;
+            box-sizing: border-box;
+        }
+        .result {
+            margin-top: 20px;
+            background-color: #f0f0f0;
+            padding: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <input type="number" id="valorAposta" placeholder="Valor em reais apostado no jogo">
+        <input type="text" id="nome1" placeholder="Nome do participante 1">
+        <input type="number" id="vitorias1" placeholder="Vitórias do participante 1">
+        <input type="text" id="nome2" placeholder="Nome do participante 2">
+        <input type="number" id="vitorias2" placeholder="Vitórias do participante 2">
+        <input type="text" id="nome3" placeholder="Nome do participante 3">
+        <input type="number" id="vitorias3" placeholder="Vitórias do participante 3">
+        <input type="text" id="nome4" placeholder="Nome do participante 4">
+        <input type="number" id="vitorias4" placeholder="Vitórias do participante 4">
+        <button onclick="calcularDividas()">Calcular Dívidas</button>
+        <div class="result" id="resultado"></div>
+    </div>
+
+    <script>
+        function calcularDividas() {
+            const valorAposta = parseFloat(document.getElementById('valorAposta').value);
+            const participantes = [
+                { nome: document.getElementById('nome1').value, vitorias: parseInt(document.getElementById('vitorias1').value) },
+                { nome: document.getElementById('nome2').value, vitorias: parseInt(document.getElementById('vitorias2').value) },
+                { nome: document.getElementById('nome3').value, vitorias: parseInt(document.getElementById('vitorias3').value) },
+                { nome: document.getElementById('nome4').value, vitorias: parseInt(document.getElementById('vitorias4').value) }
+            ];
+
+            let resultadoHTML = '';
+
+            participantes.forEach(p1 => {
+                resultadoHTML += `<p><strong>${p1.nome}</strong> deve:</p>`;
+                participantes.forEach(p2 => {
+                    if (p1.nome !== p2.nome) {
+                        const divida = Math.max(0, (p2.vitorias - p1.vitorias) * valorAposta);
+                        resultadoHTML += `<p>- Para ${p2.nome}: R$${divida.toFixed(2)}</p>`;
+                    }
+                });
+            });
+
+            document.getElementById('resultado').innerHTML = resultadoHTML;
+        }
+    </script>
+</body>
+</html>
