@@ -18,7 +18,7 @@
             background-color: #fff;
             padding: 20px;
             border-radius: 10px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
         }
         h1 {
             text-align: center;
@@ -32,11 +32,16 @@
             border: 1px solid #ccc;
             box-sizing: border-box;
         }
+        input:focus {
+            border-color: #007bff;
+            outline: none;
+        }
         button {
             background-color: #007bff;
             color: white;
             border: none;
             cursor: pointer;
+            transition: background-color 0.3s;
         }
         button:hover {
             background-color: #0056b3;
@@ -47,12 +52,15 @@
             border-radius: 5px;
             margin-top: 20px;
         }
+        .result p {
+            margin: 5px 0;
+        }
     </style>
 </head>
 <body>
     <div class="container">
         <h1>Dívidas do Jogo de Dominó</h1>
-        <input type="text" id="valorAposta" placeholder="Valor apostado no jogo (ex: R$ 10,00)" onblur="formatarMoeda(this)">
+        <input type="text" id="valorAposta" placeholder="Valor apostado no jogo (ex: R$ 10,00)" oninput="formatarMoeda(this)">
         <input type="text" id="nome1" placeholder="Nome do participante 1">
         <input type="number" id="vitorias1" placeholder="Vitórias do participante 1">
         <input type="text" id="nome2" placeholder="Nome do participante 2">
@@ -67,13 +75,14 @@
 
     <script>
         function formatarMoeda(elemento) {
-            let valor = parseFloat(elemento.value.replace(/[^0-9,]/g, '').replace(',', '.'));
-            elemento.value = isNaN(valor) ? '' : valor.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+            let valor = elemento.value.replace(/\D/g, '').padStart(3, '0');
+            valor = valor.replace(/(\d+)(\d{2})$/, "$1,$2");
+            elemento.value = `R$ ${valor}`;
         }
 
         function calcularDividas() {
-            const valorApostaStr = document.getElementById('valorAposta').value.replace(/[^0-9,]/g, '').replace(',', '.');
-            const valorAposta = parseFloat(valorApostaStr);
+            const valorApostaStr = document.getElementById('valorAposta').value.replace(/\D/g, '');
+            const valorAposta = parseFloat(valorApostaStr) / 100;
             const participantes = [];
             for (let i = 1; i <= 4; i++) {
                 participantes.push({
