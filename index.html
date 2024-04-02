@@ -60,7 +60,7 @@
 <body>
     <div class="container">
         <h1>Dívidas do Jogo de Dominó</h1>
-        <input type="text" id="valorAposta" placeholder="Valor apostado no jogo (ex: R$ 10,00)" oninput="formatarMoeda(this)">
+        <input type="text" id="valorAposta" placeholder="Valor apostado no jogo (ex: R$ 1,00)" oninput="formatarMoeda(this)">
         <input type="text" id="nome1" placeholder="Nome do participante 1">
         <input type="number" id="vitorias1" placeholder="Vitórias do participante 1">
         <input type="text" id="nome2" placeholder="Nome do participante 2">
@@ -75,8 +75,8 @@
 
     <script>
         function formatarMoeda(elemento) {
-            let valor = elemento.value.replace(/\D/g, '').padStart(3, '0');
-            valor = valor.replace(/(\d+)(\d{2})$/, "$1,$2");
+            let valor = elemento.value.replace(/\D/g, '');
+            valor = (parseInt(valor, 10) / 100).toFixed(2).replace('.', ',');
             elemento.value = `R$ ${valor}`;
         }
 
